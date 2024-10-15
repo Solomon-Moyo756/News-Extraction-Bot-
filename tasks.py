@@ -1,22 +1,16 @@
-import requests
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from NewsSelenium import NewsSelenium
+import time
 
-# video on how to start a python robot using robocorb: https://www.youtube.com/watch?v=GaMs3h2VoiE
+# use the
+bot = NewsSelenium("https://gothamist.com/")
+bot.open_news_site()
+element = bot.find_element_by_xpath('//*[@id="__nuxt"]/div/div/main/header/div[1]/div[2]/a/span')
+time.sleep(3)
+bot.scroll_page_until_element('//*[@id="gothamist-footer"]/div/div[2]/div[2]')
+extracted_text = bot.extract_text_from_element(element=element)
+print(extracted_text)
+time.sleep(10)
 
 
-def download_excel_file(url, save_path):
-    """Downloads an Excel file from the specified URL and saves it to the given path."""
-    try:
-        print(f"Starting download from {url}...")
-        response = requests.get(url, verify=False)  # Disable SSL verification for testing
-        response.raise_for_status()  # Raise an error for bad responses
-        with open(save_path, 'wb') as file:
-            file.write(response.content)
-        print(f"Download complete. File saved as: {save_path}")
-    except requests.exceptions.RequestException as e:
-        print(f"An error occurred: {e}")
-
-# Example usage
-if __name__ == "__main__":
-    url = "https://robotsparebinindustries.com/SalesData.xlsx"  # Replace with a valid URL
-    save_path = "output/SalesData.xlsx"
-    download_excel_file(url, save_path)
