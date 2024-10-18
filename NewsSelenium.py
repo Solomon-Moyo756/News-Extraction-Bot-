@@ -85,6 +85,16 @@ class NewsSelenium:
         except Exception as e:
             print(f"Element with XPath '{xpath_value}' not found: {e}")
             return None
+    def wait_for_search_results(self,css_selector):
+        # Wait until at least one article is present
+        try:
+
+            WebDriverWait(self.driver, 10).until(
+                EC.presence_of_all_elements_located((By.CSS_SELECTOR, css_selector))
+            )
+        except Exception as e:
+            print(f"Element with css_selector '{css_selector}' not found: {e}")
+            return None
 
 
     def close_browser(self):

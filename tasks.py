@@ -4,8 +4,11 @@ from NewsExtractor import NewsExtractor
 import time
 
 if __name__ == "__main__":
-    news = NewsExtractor()
+    news = NewsExtractor(search_value= "Kamala")
     results = news.get_resultant_articles()
     for i in range(len(results)):
-        print(f'title{i}: {results[i].title} \n descr: {results[i].description}\n date: {results[i].date}\n\n')
+        print(f'title{i}: {results[i].title} \n descr: {results[i].description}\n date: {results[i].date}\n image: {results[i].picture_filepath}\n\n')
         
+        #TODO: try rewview all the search results, meaning find a way to click the load more button and read all the n results
+        # Find the number of times the search phrase was included in the results
+        # Find if the title and description include money in them...
