@@ -9,3 +9,4 @@ class Identifier:
     search_icon_xpath = '//*[@id="__nuxt"]/div/div/main/header/div[1]/div[2]/div[2]/button/span[1]'
     search_input_xpath = '//*[@id="search"]/input'
     search_submit_button_xpath = '//*[@id="search"]/button'
+    subscribe_pop_up_xpath = '//*[@id="om-ylvoy8aap0bxjs9eyxud-optin"]/div/button'

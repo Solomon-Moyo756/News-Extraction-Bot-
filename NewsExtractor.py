@@ -28,7 +28,7 @@ class NewsExtractor:
     def search_the_phrase(self,search_phrase_value):
         #find the search I con and cclick it
         self.bot.wait_for_element(timeout=10,xpath_value=Identifier.search_icon_xpath)
-        search_icon =self.bot.find_element_by_xpath(xpath_value= Identifier.search_icon_xpath)
+        search_icon = self.bot.find_element_by_xpath(xpath_value= Identifier.search_icon_xpath)
         search_icon.click()# this leads to the search page
         #search for the given search phrase
         time.sleep(1)
@@ -47,6 +47,15 @@ class NewsExtractor:
         count = 0
         for a in articles:
             print("extracting...")
+
+            # check for the subscribe now pop up and close it if it is there
+            try:
+                self.bot.wait_for_element(timeout=2,xpath_value=Identifier.subscribe_pop_up_xpath)
+                subscribe_pop_up_close_button = self.bot.find_element_by_xpath(xpath_value= Identifier.subscribe_pop_up_xpath)
+                subscribe_pop_up_close_button.click()
+            except Exception as e:
+                print("close 'subscribe pop up' button not found")
+
             try:
                 #print(f"{a.text} \n\n")
                 title = self.bot.find_element_by_class_name_from_element(from_element= a,class_name_value= Identifier.title_class_name).text

@@ -12,3 +12,6 @@ if __name__ == "__main__":
         # TODO: try rewview all the search results, meaning find a way to click the load more button and read all the n results
         # Find the number of times the search phrase was included in the results
         # Find if the title and description include money in them...
+        # save the details in excel file, and download the image to a specific folder in your laptop
+        # Create robocorb account
+        # TODO: Create GitHub actions, and link them to your robocorb account
