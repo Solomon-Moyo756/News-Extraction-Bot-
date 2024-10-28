@@ -11,11 +11,11 @@ class NewsSelenium:
     def __init__(self, url):
         self.logger = logging.getLogger(__name__)
         self.url = url
-        edge_options = Options()
-        # edge_options.add_argument("--headless")  # Run in headless mode
-        # edge_options.add_argument("--disable-gpu")
+        chrome_options = Options()
+        chrome_options.add_argument("--headless")  # Run in headless mode
+        chrome_options.add_argument("--disable-gpu")
         service = Service() 
-        self.driver = webdriver.Chrome(service=service, options=edge_options)
+        self.driver = webdriver.Chrome(service=service, options=chrome_options)
 
 
     def open_news_site(self):

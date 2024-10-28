@@ -8,6 +8,9 @@ import logging
 import re
 import os
 from openpyxl import Workbook
+import requests
+import string
+import random
 
 class NewsExtractor:
 
@@ -134,21 +137,19 @@ class NewsExtractor:
         ws = wb.active
         ws.title = "Articles"
 
-        #         self.title = title
-        # self.date = date
-        # self.description = description
-        # self.picture_filepath = picture_filepath
-        # self.count_of_search_phrases = count_of_search_phrases
-        # self.is_money_mentioned = is_money_mentioned
-
-        ws.append(["Title", "Description", "Date","picture_filepath","count_of_search_phrases","is_money_mentioned"])
-        # Write data to the Excel file
+        ws.append(["Title", "Description", "Date","image name","count_of_search_phrases","is_money_mentioned"])
+        # Write the data (articles) to the excel file
+        count = 0
         for article in data:
+            count+=1
             is_money_mentioned = "No"
             if article.is_money_mentioned == True:
                 is_money_mentioned = "Yes"
-            row = [article.title,article.description,article.date,article.picture_filepath,article.count_of_search_phrases,is_money_mentioned]
+            
+            image_name = generate_image_name(article.title)
+            row = [article.title,article.description,article.date,image_name,article.count_of_search_phrases,is_money_mentioned]
             ws.append(row)
+            download_article_photo(article.picture_filepath,image_name=image_name)
         # Save the workbook to an output folder
         output_dir = "C:\\Robocorb projects\\News Extraction Bot\\News-Extraction-Bot-\\output"
         if not os.path.exists(output_dir):
@@ -158,4 +159,36 @@ class NewsExtractor:
         print("Excel file created successfully!")
 
 
+def download_article_photo(image_url,image_name):
+    response = requests.get(image_url) # send a get request to the image url
+    # check if the response was a successful one
+    if response.status_code == 200:
+        
+        with open(f"{image_name}.webp", "wb") as file:
+            file.write(response.content)
+        print(f"Image downloaded successfully! name: {image_name}")
+    else:
+        print(f"Failed to download image {image_name}. Status code:", response.status_code)
 
+def sanitize_filename(title):
+    # Remove any characters that are not valid in filenames
+    title = re.sub(r'[<>:"/\\|?*]', '', title)  # Remove invalid characters
+    title = title.replace(' ', '_')  # Replace spaces with underscores
+    return title
+
+def trim_title(title, max_words):
+    # Split the title into words and take only the first 'max_words' words
+    words = title.split()
+    trimmed_title = ' '.join(words[:max_words])  # Join the first max_words words
+    return trimmed_title
+
+def generate_random_suffix(length=6):
+    # Generate a random suffix of a specified length
+    return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
+
+def generate_image_name(title):
+    trimmed_title = trim_title(title=title, max_words=15)
+    sanitized_title = sanitize_filename(trimmed_title)
+    random_suffix = generate_random_suffix()
+    resultant_title = f"{sanitized_title}_{random_suffix}"
+    return resultant_title
