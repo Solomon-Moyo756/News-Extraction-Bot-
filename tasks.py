@@ -15,3 +15,4 @@ if __name__ == "__main__":
         # save the details in excel file, and download the image to a specific folder in your laptop
         # Create robocorb account
         # TODO: Create GitHub actions, and link them to your robocorb account
+    news.save_to_excel(results)

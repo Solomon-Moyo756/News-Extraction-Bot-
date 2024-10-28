@@ -4,13 +4,17 @@ from NewsSelenium import NewsSelenium
 from Article import NewsArticle
 import time
 from ElementIdentifiers import Identifier
+import logging
 import re
+import os
+from openpyxl import Workbook
 
 class NewsExtractor:
 
     
 
     def __init__(self,search_value) -> None:
+        self.logger = logging.getLogger(__name__)
         self.articles = []
         self.bot = NewsSelenium("https://gothamist.com/")
         self.search_value = search_value
@@ -54,7 +58,7 @@ class NewsExtractor:
                 subscribe_pop_up_close_button = self.bot.find_element_by_xpath(xpath_value= Identifier.subscribe_pop_up_xpath)
                 subscribe_pop_up_close_button.click()
             except Exception as e:
-                print("close 'subscribe pop up' button not found")
+                self.logger.error(f"close 'subscribe pop up' button not found: {e}")
 
             try:
                 #print(f"{a.text} \n\n")
@@ -68,17 +72,21 @@ class NewsExtractor:
                 except Exception as no_descr:
                     # If no description is found, handle this exception
                     description = "No description available"
+                    self.logger.error(f"No description available{no_descr}")
                 try:
 
                     date_published = self.bot.find_element_by_class_name_from_element(from_element= a, class_name_value=Identifier.date_class_name).text.split('\n')
                 except Exception as date_not_found:
                     date_published = "date not found"
+                    self.logger.error(f"date not found {date_not_found}")
 
                 try:
                     image_element = self.bot.find_element_by_xpath_from_element(from_element= a, xpath_value=Identifier.image_xpath)
                     picture_filepath = image_element.get_attribute('src')
                 except Exception as image_not_found:
                     picture_filepath = "no image path found"
+                    self.logger.error(f"no image path found {image_not_found}")
+
                 count_phrases = self.count_search_phrase(title=title,description=description)
                 is_money_mentioned = self.search_for_money(title=title, description=description)
                 article = NewsArticle(
@@ -94,7 +102,7 @@ class NewsExtractor:
 
                 
             except Exception as e:
-                print(f"Error extracting data from an article: {e}")
+                self.logger.error(f"Error extracting article: {e}")
 
             # TODO: I realized some articles do not have enough information and might require me to enter inside the article and scan for appropriate infromation
 
@@ -119,6 +127,35 @@ class NewsExtractor:
         count += sum(1 for word in arr_title_words if self.search_value.lower() in word)
         
         return count
+    def save_to_excel(self,data):
+        # Convert the data to a DataFrame
+        # Create a new workbook and select the active worksheet
+        wb = Workbook()
+        ws = wb.active
+        ws.title = "Articles"
+
+        #         self.title = title
+        # self.date = date
+        # self.description = description
+        # self.picture_filepath = picture_filepath
+        # self.count_of_search_phrases = count_of_search_phrases
+        # self.is_money_mentioned = is_money_mentioned
+
+        ws.append(["Title", "Description", "Date","picture_filepath","count_of_search_phrases","is_money_mentioned"])
+        # Write data to the Excel file
+        for article in data:
+            is_money_mentioned = "No"
+            if article.is_money_mentioned == True:
+                is_money_mentioned = "Yes"
+            row = [article.title,article.description,article.date,article.picture_filepath,article.count_of_search_phrases,is_money_mentioned]
+            ws.append(row)
+        # Save the workbook to an output folder
+        output_dir = "C:\\Robocorb projects\\News Extraction Bot\\News-Extraction-Bot-\\output"
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+
+        wb.save(os.path.join(output_dir, "articles.xlsx"))
+        print("Excel file created successfully!")
 
 
 

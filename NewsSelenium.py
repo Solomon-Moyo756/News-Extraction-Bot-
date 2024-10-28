@@ -2,13 +2,21 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+import logging
 import time
 
 class NewsSelenium:
     def __init__(self, url):
+        self.logger = logging.getLogger(__name__)
         self.url = url
-        self.driver = webdriver.Chrome()
+        edge_options = Options()
+        # edge_options.add_argument("--headless")  # Run in headless mode
+        # edge_options.add_argument("--disable-gpu")
+        service = Service() 
+        self.driver = webdriver.Chrome(service=service, options=edge_options)
+
 
     def open_news_site(self):
         # Open the specified news site URL
