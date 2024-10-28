@@ -149,6 +149,7 @@ class NewsExtractor:
             image_name = generate_image_name(article.title)
             row = [article.title,article.description,article.date,image_name,article.count_of_search_phrases,is_money_mentioned]
             ws.append(row)
+            # download the image
             download_article_photo(article.picture_filepath,image_name=image_name)
         # Save the workbook to an output folder
         output_dir = "C:\\Robocorb projects\\News Extraction Bot\\News-Extraction-Bot-\\output"
