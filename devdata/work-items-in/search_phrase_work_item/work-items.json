@@ -1,10 +1,7 @@
 [
   {
       "payload": {
-         "search_phrase": "Trump!"
-      },
-      "files": {
-          "orders.xlsx": "output/orders.xlsx"
+         "search_phrase": "Trump"
       }
   }
 ]

@@ -140,6 +140,10 @@ class NewsExtractor:
         ws.append(["Title", "Description", "Date","image name","count_of_search_phrases","is_money_mentioned"])
         # Write the data (articles) to the excel file
         count = 0
+        output_dir = os.path.join(os.getcwd(), "output")
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+
         for article in data:
             count+=1
             is_money_mentioned = "No"
@@ -150,12 +154,8 @@ class NewsExtractor:
             row = [article.title,article.description,article.date,image_name,article.count_of_search_phrases,is_money_mentioned]
             ws.append(row)
             # download the image
-            download_article_photo(article.picture_filepath,image_name=image_name)
+            download_article_photo(article.picture_filepath,image_name=f'{output_dir}\\{image_name}')
         # Save the workbook to an output folder
-        output_dir = "C:\\Robocorb projects\\News Extraction Bot\\News-Extraction-Bot-\\output"
-        if not os.path.exists(output_dir):
-            os.makedirs(output_dir)
-
         wb.save(os.path.join(output_dir, "articles.xlsx"))
         print("Excel file created successfully!")
 
