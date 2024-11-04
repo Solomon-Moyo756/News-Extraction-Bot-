@@ -12,8 +12,8 @@ class NewsSelenium:
         self.logger = logging.getLogger(__name__)
         self.url = url
         chrome_options = Options()
-        chrome_options.add_argument("--headless")  # Run in headless mode
-        chrome_options.add_argument("--disable-gpu")
+        # chrome_options.add_argument("--headless")  # Run in headless mode
+        # chrome_options.add_argument("--disable-gpu")
         service = Service() 
         self.driver = webdriver.Chrome(service=service, options=chrome_options)
 
