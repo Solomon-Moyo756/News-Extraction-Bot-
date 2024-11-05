@@ -12,8 +12,6 @@ class NewsSelenium:
         self.logger = logging.getLogger(__name__)
         self.url = url
         chrome_options = Options()
-        # chrome_options.add_argument("--headless")  # Run in headless mode
-        # chrome_options.add_argument("--disable-gpu")
         chrome_options.add_argument("--headless")  # Run in headless mode
         chrome_options.add_argument("--disable-gpu")  # Disable GPU acceleration
         chrome_options.add_argument("--no-sandbox")  # Needed for cloud environments
@@ -24,7 +22,7 @@ class NewsSelenium:
 
     def open_news_site(self):
         # Open the specified news site URL
-        self.driver.get(self.url)
+        self.driver.get(f"{self.url}")
         self.driver.maximize_window()
 
     def find_element_by_xpath(self, xpath_value):
