@@ -23,3 +23,4 @@ def Extract_News_Task():
     news = NewsExtractor(search_value= input_search_phrase)
     results = news.get_resultant_articles()
     news.save_to_excel(results)
+    #TODO: If you have time later on, think of exposing an API from your Robocorp to consume the output from your automation

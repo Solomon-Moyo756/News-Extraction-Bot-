@@ -14,6 +14,10 @@ class NewsSelenium:
         chrome_options = Options()
         # chrome_options.add_argument("--headless")  # Run in headless mode
         # chrome_options.add_argument("--disable-gpu")
+        chrome_options.add_argument("--headless")  # Run in headless mode
+        chrome_options.add_argument("--disable-gpu")  # Disable GPU acceleration
+        chrome_options.add_argument("--no-sandbox")  # Needed for cloud environments
+        chrome_options.add_argument("--disable-dev-shm-usage")  # Avoid /dev/shm issues
         service = Service() 
         self.driver = webdriver.Chrome(service=service, options=chrome_options)
 
@@ -103,7 +107,6 @@ class NewsSelenium:
         except Exception as e:
             print(f"Element with css_selector '{css_selector}' not found: {e}")
             return None
-
 
     def close_browser(self):
         # Close the browser session

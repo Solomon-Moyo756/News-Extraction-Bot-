@@ -11,6 +11,8 @@ from openpyxl import Workbook
 import requests
 import string
 import random
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 class NewsExtractor:
 
@@ -35,18 +37,35 @@ class NewsExtractor:
     def search_the_phrase(self,search_phrase_value):
         #find the search I con and cclick it
         self.bot.wait_for_element(timeout=10,xpath_value=Identifier.search_icon_xpath)
-        search_icon = self.bot.find_element_by_xpath(xpath_value= Identifier.search_icon_xpath)
-        search_icon.click()# this leads to the search page
+        try:
+            #try this action and repeat it once if it fails
+            search_icon = self.bot.find_element_by_xpath(xpath_value= Identifier.search_icon_xpath)
+            search_icon.click()# this leads to the search page
+        except Exception as e:
+            print("trying again...")
+            search_icon = self.bot.find_element_by_xpath(xpath_value= Identifier.search_icon_xpath)
+            search_icon.click()# this leads to the search page
         #search for the given search phrase
         time.sleep(1)
         self.bot.wait_for_element(timeout=10,xpath_value=Identifier.search_input_xpath)
-        search_input = self.bot.find_element_by_xpath(xpath_value= Identifier.search_input_xpath)
-        search_input.clear()
-        search_input.send_keys(search_phrase_value)
+        try:
+            search_input = self.bot.find_element_by_xpath(xpath_value= Identifier.search_input_xpath)
+            search_input.clear()
+            search_input.send_keys(search_phrase_value)
+        except Exception as e:
+            print("trying again...")
+            search_input = self.bot.find_element_by_xpath(xpath_value= Identifier.search_input_xpath)
+            search_input.clear()
+            search_input.send_keys(search_phrase_value)
         time.sleep(1)
         self.bot.wait_for_element(timeout=10,xpath_value=Identifier.search_submit_button_xpath)
-        search_submit_button = self.bot.find_element_by_xpath(xpath_value= Identifier.search_submit_button_xpath)
-        search_submit_button.click()
+        try:
+            search_submit_button = self.bot.find_element_by_xpath(xpath_value= Identifier.search_submit_button_xpath)
+            search_submit_button.click()
+        except Exception as e:
+            print("trying again...")
+            search_submit_button = self.bot.find_element_by_xpath(xpath_value= Identifier.search_submit_button_xpath)
+            search_submit_button.click()
 
     ### this function is responsible for extracting all the news articles and saving the required details to the array of News Article object
     def extract_news(self):
