@@ -6,6 +6,7 @@ class Identifier:
     date_class_name = 'date-published' 
     by_line_class_name = 'v-byline-unit'
     image_xpath = './/img[@class="image native-image prime-img-class"]'
+    image_css_selector = '.image.native-image.prime-img-class'
     search_icon_xpath = '//*[@id="__nuxt"]/div/div/main/header/div[1]/div[2]/div[2]/button/span[1]'
     search_input_xpath = '//*[@id="search"]/input'
     search_submit_button_xpath = '//*[@id="search"]/button'

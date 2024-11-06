@@ -83,10 +83,7 @@ class NewsExtractor:
     def extract_news(self):
         articles = self.bot.find_all_elements_by_css_selector(Identifier.css_selector_each_news_article_card)
         count = 0
-        print(articles)
         for a in articles:
-            print(f"details: {a.text}")
-            continue
             print("extracting...")
             self.bot.wait_for_control_room_overlay_to_disappear()
             # check for the subscribe now pop up and close it if it is there
@@ -119,7 +116,8 @@ class NewsExtractor:
                     #self.logger.error(f"date not found {date_not_found}")
 
                 try:
-                    image_element = self.bot.find_element_by_xpath_from_element(from_element= a, xpath_value=Identifier.image_xpath)
+                    image_element = self.bot.find_element_by_css_selector_from_element(from_element= a, css_selector_value=Identifier.image_css_selector)
+                    print(f"PRINTING PATH: {image_element}")
                     picture_filepath = image_element.get_attribute('src')
                 except Exception as image_not_found:
                     picture_filepath = "no image path found"
@@ -196,6 +194,7 @@ class NewsExtractor:
 
 
 def download_article_photo(image_url,image_name):
+    print(f"image url: {image_url}")
     response = requests.get(image_url) # send a get request to the image url
     # check if the response was a successful one
     if response.status_code == 200:

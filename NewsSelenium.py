@@ -37,7 +37,8 @@ class NewsSelenium:
 
     def find_element_by_class_name_from_element(self,from_element, class_name_value):
         # this function finds element by class name  from a given element, finding an element in another element
-        result = from_element.find_element(by=By.CLASS_NAME,value=class_name_value)
+        #result = from_element.find_element(by=By.CLASS_NAME,value=class_name_value)
+        result = self.driver.execute_script(f'return arguments[0].querySelector(".{class_name_value}")', from_element)
         return result
     
     def find_element_by_xpath_from_element(self,from_element, xpath_value):
@@ -47,7 +48,8 @@ class NewsSelenium:
     
     def find_element_by_css_selector_from_element(self,from_element, css_selector_value):
         # this function finds element by xpath name  from a given element, finding an element in another element
-        result = from_element.find_element(by=By.CSS_SELECTOR,value=css_selector_value)
+        #result = from_element.find_element(by=By.CSS_SELECTOR,value=css_selector_value)
+        result = self.driver.execute_script(f'return arguments[0].querySelector("{css_selector_value}")', from_element)
         return result
 
     
@@ -121,7 +123,6 @@ class NewsSelenium:
 
     def click_using_js(self,element):
         self.driver.execute_script("arguments[0].click();", element)
-
 
     def input_search_phrase(self, search_input_element, search_phrase_value):
         # Use JavaScript to set the value of the input element
