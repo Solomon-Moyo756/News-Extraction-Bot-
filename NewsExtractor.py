@@ -29,6 +29,8 @@ class NewsExtractor:
         time.sleep(2)
         self.search_the_phrase(self.search_value)
         #time.sleep(2)
+        print("waiting for articles results...")
+        time.sleep(5)
         self.bot.wait_for_search_results(Identifier.css_selector_each_news_article_card)
         self.extract_news()
     
@@ -36,51 +38,65 @@ class NewsExtractor:
 
     def search_the_phrase(self,search_phrase_value):
         #find the search I con and cclick it
+        self.bot.wait_for_control_room_overlay_to_disappear()
         self.bot.wait_for_element(timeout=10,xpath_value=Identifier.search_icon_xpath)
         try:
             #try this action and repeat it once if it fails
             search_icon = self.bot.find_element_by_xpath(xpath_value= Identifier.search_icon_xpath)
-            search_icon.click()# this leads to the search page
+            self.bot.click_using_js(search_icon)
+            #search_icon.click()
+            #search_icon.click()# this leads to the search page
+            print("search icon found")
         except Exception as e:
             print("trying again...")
             search_icon = self.bot.find_element_by_xpath(xpath_value= Identifier.search_icon_xpath)
-            search_icon.click()# this leads to the search page
+            self.bot.click_using_js(search_icon)
+            #search_icon.click()# this leads to the search page
         #search for the given search phrase
         time.sleep(1)
+        self.bot.wait_for_control_room_overlay_to_disappear()
         self.bot.wait_for_element(timeout=10,xpath_value=Identifier.search_input_xpath)
         try:
             search_input = self.bot.find_element_by_xpath(xpath_value= Identifier.search_input_xpath)
-            search_input.clear()
-            search_input.send_keys(search_phrase_value)
+
+            self.bot.input_search_phrase(search_input_element=search_input,search_phrase_value=search_phrase_value)
         except Exception as e:
             print("trying again...")
             search_input = self.bot.find_element_by_xpath(xpath_value= Identifier.search_input_xpath)
-            search_input.clear()
+            #search_input.clear()
             search_input.send_keys(search_phrase_value)
-        time.sleep(1)
+            self.bot.input_search_phrase(search_input_element=search_input,search_phrase_value=search_phrase_value)
+        time.sleep(2)
         self.bot.wait_for_element(timeout=10,xpath_value=Identifier.search_submit_button_xpath)
         try:
             search_submit_button = self.bot.find_element_by_xpath(xpath_value= Identifier.search_submit_button_xpath)
-            search_submit_button.click()
+            #search_submit_button.click()
+            self.bot.click_using_js(search_submit_button)
+            print("seaccrhing ...")
         except Exception as e:
             print("trying again...")
             search_submit_button = self.bot.find_element_by_xpath(xpath_value= Identifier.search_submit_button_xpath)
-            search_submit_button.click()
+            #search_submit_button.click()
+            self.bot.click_using_js(search_submit_button)
 
     ### this function is responsible for extracting all the news articles and saving the required details to the array of News Article object
     def extract_news(self):
         articles = self.bot.find_all_elements_by_css_selector(Identifier.css_selector_each_news_article_card)
         count = 0
+        print(articles)
         for a in articles:
+            print(f"details: {a.text}")
+            continue
             print("extracting...")
-
+            self.bot.wait_for_control_room_overlay_to_disappear()
             # check for the subscribe now pop up and close it if it is there
             try:
                 self.bot.wait_for_element(timeout=2,xpath_value=Identifier.subscribe_pop_up_xpath)
                 subscribe_pop_up_close_button = self.bot.find_element_by_xpath(xpath_value= Identifier.subscribe_pop_up_xpath)
                 subscribe_pop_up_close_button.click()
             except Exception as e:
-                self.logger.error(f"close 'subscribe pop up' button not found: {e}")
+                #self.logger.error(f"close 'subscribe pop up' button not found: {e}")
+                print("subscribe pop up not found.. continue.")
 
             try:
                 #print(f"{a.text} \n\n")
@@ -94,20 +110,20 @@ class NewsExtractor:
                 except Exception as no_descr:
                     # If no description is found, handle this exception
                     description = "No description available"
-                    self.logger.error(f"No description available{no_descr}")
+                    #self.logger.error(f"No description available{no_descr}")
                 try:
 
                     date_published = self.bot.find_element_by_class_name_from_element(from_element= a, class_name_value=Identifier.date_class_name).text.split('\n')
                 except Exception as date_not_found:
                     date_published = "date not found"
-                    self.logger.error(f"date not found {date_not_found}")
+                    #self.logger.error(f"date not found {date_not_found}")
 
                 try:
                     image_element = self.bot.find_element_by_xpath_from_element(from_element= a, xpath_value=Identifier.image_xpath)
                     picture_filepath = image_element.get_attribute('src')
                 except Exception as image_not_found:
                     picture_filepath = "no image path found"
-                    self.logger.error(f"no image path found {image_not_found}")
+                    #self.logger.error(f"no image path found {image_not_found}")
 
                 count_phrases = self.count_search_phrase(title=title,description=description)
                 is_money_mentioned = self.search_for_money(title=title, description=description)

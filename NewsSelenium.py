@@ -65,7 +65,7 @@ class NewsSelenium:
         
         elements = self.driver.find_elements(by= By.CSS_SELECTOR, value= css_selector)
         #articles =  self.driver.find_elements(By.CSS_SELECTOR, '.v-card.gothamist-card')
-        print(len(elements))
+        print(f"{len(elements)} elements found" )
         #print(articles)
         return elements
 
@@ -105,7 +105,31 @@ class NewsSelenium:
         except Exception as e:
             print(f"Element with css_selector '{css_selector}' not found: {e}")
             return None
+    
+    def wait_for_control_room_overlay_to_disappear(self):
+        # Wait for the overlay to disappear
+        try:
+            WebDriverWait(self.driver , 10).until(EC.invisibility_of_element_located((By.CSS_SELECTOR, "fc-dialog-overlay")))
+            print(f"Element with css_selector fc-dialog-overlay was found")
+        except Exception as e:
+            print(f"Element with css_selector fc-dialog-overlay not found: {e}")
+            return None
 
     def close_browser(self):
         # Close the browser session
         self.driver.quit()
+
+    def click_using_js(self,element):
+        self.driver.execute_script("arguments[0].click();", element)
+
+
+    def input_search_phrase(self, search_input_element, search_phrase_value):
+        # Use JavaScript to set the value of the input element
+        self.driver.execute_script("""
+            var inputElement = arguments[0];
+            var value = arguments[1];
+            inputElement.value = value;
+            // Trigger the input event to simulate typing
+            var event = new Event('input', { 'bubbles': true, 'cancelable': true });
+            inputElement.dispatchEvent(event);
+        """, search_input_element, search_phrase_value)
