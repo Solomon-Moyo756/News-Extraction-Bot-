@@ -29,6 +29,10 @@ class NewsSelenium:
         # Find an element using the given XPath value
         result = self.driver.find_element(by=By.XPATH, value=xpath_value)
         return result
+    
+    def find_element_by_css_selector(self, css_selector_value):
+        result = self.driver.find_element(by=By.CSS_SELECTOR,value=css_selector_value)
+        return result
 
     def find_element_by_name(self, name_value):
         # Find an element using the name value
@@ -66,7 +70,7 @@ class NewsSelenium:
         print(f"finding by css selector...{css_selector}")
         
         elements = self.driver.find_elements(by= By.CSS_SELECTOR, value= css_selector)
-        #articles =  self.driver.find_elements(By.CSS_SELECTOR, '.v-card.gothamist-card')
+        
         print(f"{len(elements)} elements found" )
         #print(articles)
         return elements
@@ -134,3 +138,12 @@ class NewsSelenium:
             var event = new Event('input', { 'bubbles': true, 'cancelable': true });
             inputElement.dispatchEvent(event);
         """, search_input_element, search_phrase_value)
+
+    def find_text_from_element(self,a):
+        element_text = self.driver.execute_script('return arguments[0].textContent;', a)
+        return element_text
+    def get_element_attribute(self,element,attribute_name):
+        # get an attribute from an element
+        attribute = self.driver.execute_script(f"return arguments[0].getAttribute('{attribute_name}');", element)
+        return attribute
+        

@@ -11,3 +11,5 @@ class Identifier:
     search_input_xpath = '//*[@id="search"]/input'
     search_submit_button_xpath = '//*[@id="search"]/button'
     subscribe_pop_up_xpath = '//*[@id="om-ylvoy8aap0bxjs9eyxud-optin"]/div/button'
+    num_search_results_css_selector = ".search-page-results.pt-2"
+    load_more_button_xpath = '//*[@id="resultList"]/div[2]/button/span[1]'
