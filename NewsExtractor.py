@@ -155,7 +155,7 @@ class NewsExtractor:
         return self.articles
     
     def search_for_money(self, title, description):
-        money_pattern = r'\b(money|\$|€|£|dollars|USD|ZAR)\b'
+        money_pattern = r'(\$|dollars|USD)\b'
         match_desc = re.search(money_pattern, description, re.IGNORECASE)
         match_title = re.search(money_pattern, title, re.IGNORECASE)
         if match_desc or match_title:
