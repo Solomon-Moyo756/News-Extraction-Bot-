@@ -39,9 +39,23 @@ jobs:
           rcc configure credentials ${{ secrets.ROBOCORP_ACCESS_CRED }} --account ${{ secrets.ROBOCORP_USER_ACCOUNT_ID }}
 
       - name: Upload to Control Room
+        env:
+          ROBOCLOUD_API_KEY: ${{ secrets.ROBOCORP_API_KEY }}
         run: |
-          rcc cloud push --workspace ${{ secrets.ROBOCORP_WORKSPACE_ID }} --robot ${{ secrets.ROBOCORP_ROBOT_ID }}
-
+          # Only proceed if the robot was created or if it already existed
+          # Extract the robot ID from the output JSON
+          ROBOT_ID=${{ secrets.ROBOCORP_ROBOT_ID }}
+          # Push the robot to Robocorp Control Room using the retrieved robot ID
+          rcc cloud push -d . -r $ROBOT_ID -w ${{ secrets.ROBOCORP_WORKSPACE_ID }}
+          # Capture the exit code of the previous command
+          EXIT_CODE=$?
+          # Provide feedback based on the exit code
+          if [ $EXIT_CODE -eq 0 ]; then
+            echo "Robocloud process completed successfully."
+          else
+            echo "Robocloud process failed with exit code $EXIT_CODE."
+            exit $EXIT_CODE
+          fi
     
       
     
