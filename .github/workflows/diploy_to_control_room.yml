@@ -30,7 +30,7 @@ jobs:
 
       - name: Install RCC
         run: |
-          curl -o rcc https://downloads.robocorp.com/rcc/latest/linux64/rcc
+          curl -o rcc https://downloads.robocorp.com/rcc/releases/v17.18.0/linux64/rcc
           chmod +x rcc
           sudo mv rcc /usr/local/bin/
 
