@@ -64,15 +64,7 @@ jobs:
       - name: Run Robocloud Process
         env:
           ROBOCLOUD_API_KEY: ${{ secrets.ROBOCORP_API_KEY }}
-        run: |
-          ROBOT_ID=${{ secrets.ROBOCORP_ROBOT_ID }}
-          rcc cloud push -d . -r $ROBOT_ID -w ${{ secrets.ROBOCORP_WORKSPACE_ID }}
-          EXIT_CODE=$?
-          if [ $EXIT_CODE -eq 0 ]; then
-            echo "Robocloud process completed successfully."
-          else
-            echo "Robocloud process failed with exit code $EXIT_CODE."
-            exit $EXIT_CODE
-          fi    
+        run: rcc cloud push -d . -r ${{ secrets.ROBOCORP_ROBOT_ID }} -w ${{ secrets.ROBOCORP_WORKSPACE_ID }}
+
       
     
