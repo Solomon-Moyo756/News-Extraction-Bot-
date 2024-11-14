@@ -27,6 +27,13 @@ jobs:
       - name: Update Conda environment
         run: conda env update --file conda.yaml --name myenv
 
+
+      - name: Install RCC
+        run: |
+          curl -o rcc https://downloads.robocorp.com/rcc/latest/linux64/rcc
+          chmod +x rcc
+          sudo mv rcc /usr/local/bin/
+
       - name: Log in to Robocorp
         env:
           RCC_CREDENTIALS_SECRET: ${{ secrets.ROBOCORP_ACCESS_CRED }}
