@@ -35,10 +35,8 @@ jobs:
           sudo mv rcc /usr/local/bin/
 
       - name: Log in to Robocorp
-        env:
-          RCC_CREDENTIALS_SECRET: ${{ secrets.ROBOCORP_ACCESS_CRED }}
         run: |
-          rcc configure credentials robocorp
+          rcc configure credentials ${{ secrets.ROBOCORP_ACCESS_CRED }} --account ${{ secrets.ROBOCORP_ACCOUNT_ID }}
 
       - name: Upload to Control Room
         run: |
