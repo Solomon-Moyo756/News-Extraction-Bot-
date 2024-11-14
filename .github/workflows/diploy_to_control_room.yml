@@ -26,7 +26,17 @@ jobs:
     
       - name: Update Conda environment
         run: conda env update --file conda.yaml --name myenv
-        
+
+      - name: Log in to Robocorp
+        env:
+          RCC_CREDENTIALS_SECRET: ${{ secrets.ROBOCORP_ACCESS_CRED }}
+        run: |
+          rcc configure credentials robocorp
+
+      - name: Upload to Control Room
+        run: |
+          rcc cloud push --workspace ${{ secrets.ROBOCORP_WORKSPACE_ID }} --robot ${{ secrets.ROBOCORP_ROBOT_ID }}
+
     
       
     
