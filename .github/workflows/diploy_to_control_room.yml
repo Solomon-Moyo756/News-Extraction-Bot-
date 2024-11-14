@@ -64,7 +64,7 @@ jobs:
       - name: Run Robocloud Process
         env:
           ROBOCLOUD_API_KEY: ${{ secrets.ROBOCORP_API_KEY }}
-        run: rcc cloud push -d . -r ${{ secrets.ROBOCORP_ROBOT_ID }} -w ${{ secrets.ROBOCORP_WORKSPACE_ID }}
+        run: rcc cloud push -d . -r News_Extraction_bot_1 -w 2581fb9a-7cce-4624-b0d9-b9e5453dd2f6
 
       
     
