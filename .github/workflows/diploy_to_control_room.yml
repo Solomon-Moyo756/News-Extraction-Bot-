@@ -44,7 +44,7 @@ jobs:
           # Check if the process exists using rcc command
           # Try to create the Robocloud process using rcc command
           # If it fails due to the robot already existing, capture the error message
-          ROBOT_CREATION_OUTPUT=$(rcc cloud new -r News_Extraction_bot_1 -w ${{ secrets.ROBOCORP_WORKSPACE_ID }} --json 2>/dev/null || true)
+          ROBOT_CREATION_OUTPUT=$(rcc cloud new -r ${{ secrets.ROBOCORP_ROBOT_ID }} -w ${{ secrets.ROBOCORP_WORKSPACE_ID }} --json 2>/dev/null || true)
           if echo "$ROBOT_CREATION_OUTPUT" | grep -q "ROBOT_WITH_SAME_NAME_ALREADY_EXISTS"; then
             echo "Robot with the same name already exists."
             echo "name=exists::true" >> $GITHUB_OUTPUT
@@ -64,7 +64,7 @@ jobs:
       - name: Run Robocloud Process
         env:
           ROBOCLOUD_API_KEY: ${{ secrets.ROBOCORP_API_KEY }}
-        run: rcc cloud push -d . -r News_Extraction_bot_1 -w 2581fb9a-7cce-4624-b0d9-b9e5453dd2f6
+        run: rcc cloud push -d . -r ${{ secrets.ROBOCORP_ROBOT_ID }} -w ${{ secrets.ROBOCORP_WORKSPACE_ID }}
 
       
     
