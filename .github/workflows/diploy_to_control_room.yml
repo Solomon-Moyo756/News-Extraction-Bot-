@@ -36,7 +36,7 @@ jobs:
 
       - name: Log in to Robocorp
         run: |
-          rcc configure credentials 22021:e2cd94d904af59e13f12e0214e85df553d2623e13c486fe8afbde4d7308c5cb75ae9c009b620b54160c77d3669f4d3b0 --account 125d1e97-7544-481e-b034-26ec54322ffc
+          rcc configure credentials ${{ secrets.ROBOCORP_ACCESS_CRED }} --account ${{ secrets.ROBOCORP_USER_ACCOUNT_ID }}
 
       - name: Upload to Control Room
         run: |
