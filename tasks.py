@@ -12,7 +12,7 @@ from RPA.Robocorp.WorkItems import WorkItems
 #     results = news.get_resultant_articles()
 #     # TODO: Create GitHub actions, and link them to your robocorb account
 #     news.save_to_excel(results)
-
+#   Robot ID: 42042 -> I found this robot ID on some error message, otherwise I don't know where else to get it
 
 @task
 def Extract_News_Task():
